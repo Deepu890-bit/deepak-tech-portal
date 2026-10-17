@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deepak Technologies | Portal</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: 
+        radial-gradient(circle at 15% 20%, rgba(185, 28, 28, 0.35) 0%, transparent 50%),
+        radial-gradient(circle at 85% 80%, rgba(127, 29, 29, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, #1f0407 0%, #0d0103 40%, #050001 80%, #000000 100%);
+      background-color: #030001;
+      color: #f3f4f6;
+      overflow-x: hidden;
+    }
+
+    /* Top Sticky Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(15, 3, 5, 0.85);
+      border-bottom: 1px solid rgba(220, 38, 38, 0.3);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+    }
+
+    .nav-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #ffffff;
+      text-transform: uppercase;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo span {
+      color: #ef4444;
+      text-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
+    }
+
+    nav {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .nav-link {
+      background: none;
+      border: none;
+      color: #d1d5db;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 0.4rem 0.2rem;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    .nav-link:hover {
+      color: #ef4444;
+    }
+
+    .nav-link.active {
+      color: #ffffff;
+    }
+
+    .nav-link.active::after {
+      content: "";
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, #b91c1c, #ef4444, #b91c1c);
+      box-shadow: 0 0 8px #ef4444;
+    }
+
+    .nav-btn {
+      background: linear-gradient(135deg, #7f1d1d, #b91c1c);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #ffffff;
+      padding: 0.5rem 1.25rem;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 12px rgba(185, 28, 28, 0.3);
+    }
+
+    .nav-btn:hover {
+      background: linear-gradient(135deg, #991b1b, #ef4444);
+      box-shadow: 0 0 16px rgba(239, 68, 68, 0.6);
+      transform: translateY(-1px);
+    }
+
+    /* Main Container */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 1.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .view-section {
+      width: 100%;
+      display: none;
+      animation: fadeIn 0.4s ease forwards;
+    }
+
+    .view-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Content Cards */
+    .content-box {
+      background: linear-gradient(145deg, rgba(26, 6, 10, 0.85), rgba(10, 2, 4, 0.95));
+      border: 1px solid rgba(220, 38, 38, 0.28);
+      border-radius: 16px;
+      padding: 2.5rem;
+      box-shadow: 
+        0 25px 60px rgba(0, 0, 0, 0.9),
+        0 0 35px rgba(185, 28, 28, 0.2);
+      backdrop-filter: blur(20px);
+    }
+
+    .page-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #fef2f2;
+      margin-bottom: 0.75rem;
+    }
+
+    .page-title span {
+      color: #ef4444;
+      text-shadow: 0 0 12px rgba(239, 68, 68, 0.5);
+    }
+
+    .lead-text {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: #d1d5db;
+      margin-bottom: 2rem;
+    }
+
+    .grid-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .feature-card {
+      background: rgba(15, 3, 6, 0.7);
+      border: 1px solid rgba(220, 38, 38, 0.25);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+      border-color: #ef4444;
+      box-shadow: 0 0 18px rgba(239, 68, 68, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .feature-card h3 {
+      font-size: 1.15rem;
+      color: #fca5a5;
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-card p {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: #9ca3af;
+    }
+
+    /* Compact Founder Profile Card */
+    /* Balanced Medium Founder Profile Frame */
+    .founder-avatar-frame {
+      width: 135px;
+      height: 135px;
+      min-width: 135px;
+      max-width: 135px;
+      aspect-ratio: 1 / 1;
+      flex-shrink: 0;
+      border-radius: 50%;
+      padding: 4px;
+      background: linear-gradient(135deg, #ef4444, #7f1d1d, #ef4444);
+      box-shadow: 0 0 22px rgba(239, 68, 68, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .founder-img {
+      width: 100% !important;
+      height: 100% !important;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center 20%; /* Positions the crop naturally around your face */
+      display: block;
+      border: 2px solid #030001;
+    }
+
+    .avatar-fallback {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: #1f0407;
+      color: #ef4444;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #030001;
+    }
+
+    /* Contact Details */
+    .contact-details {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.25rem;
+      background: rgba(18, 3, 7, 0.85);
+      border: 1px solid rgba(220, 38, 38, 0.3);
+      border-radius: 8px;
+    }
+
+    .contact-item strong {
+      color: #ef4444;
+      min-width: 80px;
+      font-size: 0.95rem;
+    }
+
+    .contact-item span, .contact-item a {
+      color: #f3f4f6;
+      font-size: 1rem;
+      text-decoration: none;
+    }
+
+    .contact-item a:hover {
+      color: #f87171;
+    }
+
+    /* Auth Card */
+    .auth-wrapper {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .auth-card {
+      width: 100%;
+      max-width: 420px;
+      background: linear-gradient(145deg, rgba(26, 6, 10, 0.85), rgba(10, 2, 4, 0.95));
+      border: 1px solid rgba(220, 38, 38, 0.28);
+      border-radius: 16px;
+      padding: 2.25rem 2rem;
+      box-shadow: 
+        0 25px 60px rgba(0, 0, 0, 0.9),
+        0 0 35px rgba(185, 28, 28, 0.22);
+      backdrop-filter: blur(20px);
+    }
+
+    .tabs {
+      display: flex;
+      margin-bottom: 1.75rem;
+      border-bottom: 1px solid rgba(220, 38, 38, 0.2);
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 0.85rem;
+      background: none;
+      border: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #7f1d1d;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .tab-btn:hover { color: #f87171; }
+    .tab-btn.active { color: #ffffff; font-weight: 700; }
+    .tab-btn.active::after {
+      content: "";
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, #b91c1c, #ef4444, #b91c1c);
+      box-shadow: 0 0 10px #ef4444;
+    }
+
+    .auth-card h2 {
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: #fef2f2;
+      margin-bottom: 0.35rem;
+      text-align: center;
+    }
+
+    .subtitle {
+      font-size: 0.85rem;
+      color: #991b1b;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #fca5a5;
+      margin-bottom: 0.45rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      background: rgba(10, 2, 4, 0.75);
+      border: 1px solid rgba(185, 28, 28, 0.35);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      color: #ffffff;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    input:focus {
+      background: rgba(18, 3, 7, 0.9);
+      border-color: #ef4444;
+      box-shadow: 0 0 15px rgba(239, 68, 68, 0.45);
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 0.9rem;
+      margin-top: 0.5rem;
+      background: linear-gradient(135deg, #7f1d1d 0%, #b91c1c 45%, #ef4444 85%, #991b1b 100%);
+      color: #ffffff;
+      border: 1px solid rgba(254, 202, 202, 0.25);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(185, 28, 28, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background: linear-gradient(135deg, #991b1b 0%, #dc2626 50%, #f87171 100%);
+      box-shadow: 0 8px 25px rgba(220, 38, 38, 0.6);
+      transform: translateY(-1px);
+    }
+
+    .status-msg {
+      margin-bottom: 1.25rem;
+      font-size: 0.85rem;
+      text-align: center;
+      padding: 0.75rem;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .status-msg.success {
+      display: block;
+      background: rgba(6, 78, 59, 0.4);
+      color: #6ee7b7;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .status-msg.error {
+      display: block;
+      background: rgba(69, 10, 10, 0.6);
+      color: #fca5a5;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="nav-container">
+      <a href="#" class="logo" onclick="switchNav('home')">DEEPAK <span>TECH</span></a>
+      <nav>
+        <button class="nav-link active" id="nav-home" onclick="switchNav('home')">Home</button>
+        <button class="nav-link" id="nav-about" onclick="switchNav('about')">About</button>
+        <button class="nav-link" id="nav-contact" onclick="switchNav('contact')">Contact</button>
+        <button class="nav-btn" id="nav-auth" onclick="switchNav('auth')">Sign In</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- 1. Home Section -->
+    <section id="view-home" class="view-section active">
+      <div class="content-box">
+        <h1 class="page-title">Enterprise Systems & <span>Digital Solutions</span></h1>
+        <p class="lead-text">
+          Deepak Technologies designs and builds high-performance, secure digital platforms. We specialize in robust database architecture, full-stack web applications, and encrypted access control systems.
+        </p>
+
+        <h2 style="font-size: 1.3rem; margin-top: 1.5rem; color: #ef4444;">Our Procedures & How We Work</h2>
+        <div class="grid-cards">
+          <div class="feature-card">
+            <h3>1. Requirement Analysis</h3>
+            <p>We analyze system specifications, architectural constraints, and user flows before writing any production code.</p>
+          </div>
+          <div class="feature-card">
+            <h3>2. Secure Database Design</h3>
+            <p>We implement relational schemas in MySQL with strict data validation, indexing, and industry-standard password hashing.</p>
+          </div>
+          <div class="feature-card">
+            <h3>3. Full-Stack Integration</h3>
+            <p>Our backend services in Node.js connect directly to our frontend clients through structured, high-speed RESTful APIs.</p>
+          </div>
+          <div class="feature-card">
+            <h3>4. Quality & Security Audits</h3>
+            <p>Every endpoint undergoes strict input sanitation, prepared-statement verification, and regression testing prior to deployment.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. About Section with Compact Founder Profile -->
+    <section id="view-about" class="view-section">
+      <div class="content-box">
+        <h1 class="page-title">About <span>Our Company</span></h1>
+        <p class="lead-text">
+          Founded on engineering rigor and clean design, Deepak Technologies provides custom software engineering for businesses requiring secure, scalable web systems.
+        </p>
+
+        <!-- Founder Profile Card -->
+        <div class="founder-card">
+          <div class="founder-avatar-frame">
+            <img 
+              src="deepak.jpg.jpeg" 
+              alt="Deepak SR - Founder" 
+              class="founder-img"
+              onerror="this.style.display='none'; document.getElementById('avatar-fallback').style.display='flex';"
+            />
+            <div id="avatar-fallback" class="avatar-fallback" style="display:none;">
+              <span>DSR</span>
+            </div>
+          </div>
+          <div class="founder-details">
+            <span class="role-badge">Founder & CEO</span>
+            <h2 class="founder-name">Deepak SR</h2>
+            <p class="founder-bio">
+              Leading Deepak Technologies with a focus on building robust, scalable full-stack applications, secure MySQL database architectures, and intuitive modern web interfaces.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid-cards" style="margin-top: 2rem;">
+          <div class="feature-card">
+            <h3>Our Mission</h3>
+            <p>To deliver uncompromising software reliability, combining beautiful user interfaces with hardened backend architectures.</p>
+          </div>
+          <div class="feature-card">
+            <h3>Core Expertise</h3>
+            <p>Full-stack web development, MySQL database optimization, authentication infrastructure, and cloud deployment pipelines.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Contact Section -->
+    <section id="view-contact" class="view-section">
+      <div class="content-box">
+        <h1 class="page-title">Contact <span>Details</span></h1>
+        <p class="lead-text">
+          Reach out to our leadership team for project inquiries, technical collaboration, or support.
+        </p>
+
+        <div class="contact-details">
+          <div class="contact-item">
+            <strong>Contact:</strong>
+            <span>Deepak</span>
+          </div>
+          <div class="contact-item">
+            <strong>Mobile:</strong>
+            <a href="tel:+919876543210">+91 98765 43210</a>
+          </div>
+          <div class="contact-item">
+            <strong>Email:</strong>
+            <a href="mailto:deepudeepaksr23@gmail.com">deepudeepaksr23@gmail.com</a>
+          </div>
+          <div class="contact-item">
+            <strong>Location:</strong>
+            <span>Karnataka, India</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Sign In / Register Section -->
+    <section id="view-auth" class="view-section">
+      <div class="auth-wrapper">
+        <div class="auth-card">
+          <div class="tabs">
+            <button class="tab-btn active" id="loginTabBtn" onclick="toggleForm('login')">Sign In</button>
+            <button class="tab-btn" id="regTabBtn" onclick="toggleForm('register')">Register</button>
+          </div>
+
+          <div id="statusMsg" class="status-msg"></div>
+
+          <form id="loginForm" onsubmit="submitForm(event, '/api/login')">
+            <h2>Sign In</h2>
+            <p class="subtitle">Please enter your email and password</p>
+            
+            <div class="form-group">
+              <label for="loginEmail">Enter your email</label>
+              <input type="email" id="loginEmail" required placeholder="Enter your email" />
+            </div>
+            <div class="form-group">
+              <label for="loginPassword">Enter your password</label>
+              <input type="password" id="loginPassword" required placeholder="Enter your password" />
+            </div>
+            <button type="submit" class="submit-btn">Sign In</button>
+          </form>
+
+          <form id="regForm" class="hidden" onsubmit="submitForm(event, '/api/register')">
+            <h2>Register</h2>
+            <p class="subtitle">Create a new account</p>
+
+            <div class="form-group">
+              <label for="regEmail">Enter your email</label>
+              <input type="email" id="regEmail" required placeholder="Enter your email" />
+            </div>
+            <div class="form-group">
+              <label for="regPassword">Enter your password</label>
+              <input type="password" id="regPassword" minlength="6" required placeholder="Enter your password" />
+            </div>
+            <button type="submit" class="submit-btn">Register</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+ <script>
+    // Navigation Routing
+    function switchNav(section) {
+      document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+
+      const target = document.getElementById(`view-${section}`);
+      if (target) target.classList.add('active');
+
+      const activeBtn = document.getElementById(`nav-${section}`);
+      if (activeBtn) activeBtn.classList.add('active');
+    }
+
+    function toggleForm(type) {
+      const isLogin = type === 'login';
+      document.getElementById('loginForm').classList.toggle('hidden', !isLogin);
+      document.getElementById('regForm').classList.toggle('hidden', isLogin);
+      document.getElementById('loginTabBtn').classList.toggle('active', isLogin);
+      document.getElementById('regTabBtn').classList.toggle('active', !isLogin);
+      hideMessage();
+    }
+
+    function showMessage(text, isError) {
+      const msg = document.getElementById('statusMsg');
+      msg.textContent = text;
+      msg.className = 'status-msg ' + (isError ? 'error' : 'success');
+    }
+
+    function hideMessage() {
+      const msg = document.getElementById('statusMsg');
+      msg.textContent = '';
+      msg.className = 'status-msg';
+    }
+
+    // Submit Registration or Login and Store Token
+    async function submitForm(event, endpoint) {
+      event.preventDefault();
+      hideMessage();
+
+      const isLogin = endpoint.includes('login');
+      const email = document.getElementById(isLogin ? 'loginEmail' : 'regEmail').value;
+      const password = document.getElementById(isLogin ? 'loginPassword' : 'regPassword').value;
+
+      try {
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+          showMessage(data.error || 'Authentication failed.', true);
+          return;
+        }
+
+        showMessage(data.message, false);
+
+        if (data.token) {
+          // Store token in browser storage
+          localStorage.setItem('auth_token', data.token);
+          localStorage.setItem('user_email', data.user.email);
+          updateAuthUI();
+          setTimeout(() => switchNav('home'), 1000);
+        }
+      } catch (err) {
+        showMessage('Unable to reach backend. Ensure server.js is running.', true);
+      }
+    }
+
+    // Check login state and toggle between Sign In and Log Out
+    function updateAuthUI() {
+      const token = localStorage.getItem('auth_token');
+      const email = localStorage.getItem('user_email');
+      const authBtn = document.getElementById('nav-auth');
+
+      if (token && email) {
+        authBtn.textContent = 'Log Out';
+        authBtn.onclick = logoutUser;
+      } else {
+        authBtn.textContent = 'Sign In';
+        authBtn.onclick = () => switchNav('auth');
+      }
+    }
+
+    function logoutUser() {
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('user_email');
+      updateAuthUI();
+      switchNav('home');
+      alert('You have been logged out.');
+    }
+
+    // Run on page load
+    window.onload = updateAuthUI;
+  </script>
+</body>
+</html>
